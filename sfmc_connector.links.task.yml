@@ -1,0 +1,35 @@
+sfmc_connector.settings_tab:
+  route_name: sfmc_connector.api_settings
+  title: 'Salesforce Settings'
+  base_route: sfmc_connector.api_settings
+
+
+sfmc_connector.api_settings_tab:
+  title: 'Access token'
+  route_name: sfmc_connector.api_settings
+  parent_id: sfmc_connector.settings_tab
+
+sfmc_connector.subscription_settings_tab:
+  title: 'Subscription'
+  route_name: sfmc_connector.subscription_settings
+  parent_id: sfmc_connector.settings_tab
+
+sfmc_connector.field_mapping_tab:
+  route_name: sfmc_connector.user_field_mappings_settings
+  title: 'Fields Mapping'
+  base_route: sfmc_connector.api_settings
+
+sfmc_connector.user_field_mapping_tab:
+  title: 'User Fields'
+  route_name: sfmc_connector.user_field_mappings_settings
+  parent_id: sfmc_connector.field_mapping_tab
+
+sfmc_connector.webform_field_mapping_tab:
+  title: 'Webform Fields'
+  route_name: sfmc_connector.webform_field_mappings_settings
+  parent_id: sfmc_connector.field_mapping_tab
+
+sfmc_connector.sfmc_batch_tab:
+  route_name: sfmc_connector.sfmc_batch_settings
+  title: 'Salesforce Batch'
+  base_route: sfmc_connector.api_settings

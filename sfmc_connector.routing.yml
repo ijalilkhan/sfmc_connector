@@ -1,0 +1,49 @@
+sfmc_connector.api_settings:
+  path: '/admin/config/sfmc_connector/api/settings'
+  defaults:
+    _form: '\Drupal\sfmc_connector\Form\SFMCAPISettingsForm'
+    _title: 'SFMC API Settings'
+  requirements:
+    _permission: 'administer site configuration'
+  options:
+    _admin_route: TRUE
+
+sfmc_connector.subscription_settings:
+  path: '/admin/config/sfmc_connector/subscription/settings'
+  defaults:
+    _form: '\Drupal\sfmc_connector\Form\SFMCSubscriptionSettingsForm'
+    _title: 'SFMC Subscription Settings'
+  requirements:
+    _permission: 'administer site configuration'
+  options:
+    _admin_route: TRUE
+
+sfmc_connector.user_field_mappings_settings:
+  path: '/admin/config/sfmc_connector/fields_mapping/user/settings'
+  defaults:
+    _form: '\Drupal\sfmc_connector\Form\SFMCUserFieldsMappingForm'
+    _title: 'SFMC User Fields Mapping Settings'
+  requirements:
+    _permission: 'administer site configuration'
+  options:
+    _admin_route: TRUE
+
+sfmc_connector.webform_field_mappings_settings:
+  path: '/admin/config/sfmc_connector/fields_mapping/webform/settings'
+  defaults:
+    _form: '\Drupal\sfmc_connector\Form\SFMCWebformFieldsMappingForm'
+    _title: 'SFMC Webform Fields Mapping Settings'
+  requirements:
+    _permission: 'administer site configuration'
+  options:
+    _admin_route: TRUE
+
+sfmc_connector.sfmc_batch_settings:
+  path: '/admin/config/sfmc_connector/sfmc_batch/settings'
+  defaults:
+    _form: '\Drupal\sfmc_connector\Form\SFMCBatchForm'
+    _title: 'SFMC Non Subscribed Batch'
+  requirements:
+    _permission: 'administer site configuration'
+  options:
+    _admin_route: TRUE

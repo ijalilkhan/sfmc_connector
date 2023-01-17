@@ -1,0 +1,6 @@
+services:
+  sfmc_connector.salesforce_service:
+    class: Drupal\sfmc_connector\SalesForceAPIService
+    arguments: ['@http_client', '@logger.factory', '@config.factory', '@entity_field.manager', '@entity_type.manager']
+    requirements:
+      _access: 'TRUE'

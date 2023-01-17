@@ -1,0 +1,5 @@
+sfmc_connector.api_settings:
+  title: 'Salesforce(SFMC) Settings'
+  description: 'Manage settings for salesforce API & entity fields mapping.'
+  parent: system.admin_config_system
+  route_name: sfmc_connector.api_settings

@@ -1,0 +1,96 @@
+<?php
+
+/**
+ * @file
+ * sfmc connector module.
+ */
+
+use Drupal\Core\Entity\EntityInterface;
+
+/**
+ * Implement hook_user_insert().
+ * @param EntityInterface $user
+ * @return void
+ */
+function sfmc_connector_user_insert(EntityInterface $user) {
+  \Drupal::service('sfmc_connector.salesforce_service')->subscription($user, 'user');
+}
+
+/**
+ * Implement hook_user_update().
+ * @param EntityInterface $user
+ * @return void
+ */
+function sfmc_connector_user_update(EntityInterface $user) {
+  \Drupal::service('sfmc_connector.salesforce_service')->subscription($user, 'user');
+}
+
+/**
+ * @param $user_data
+ * @param $context
+ * @return void
+ */
+function sfmc_connector_batch_process_for_pending($user_data, $webform_data, &$context) {
+  $SFMCService = \Drupal::service('sfmc_connector.salesforce_service');
+
+  $message = 'Salesforce subscription in progress ...';
+
+  if (empty($context['sandbox'])) {
+    $context['sandbox'] = [];
+    $context['sandbox']['progress'] = 0;
+    $context['sandbox']['current_id'] = 0;
+
+    $context['sandbox']['max'] = count($user_data) + count($webform_data);
+  }
+
+  foreach ($user_data as $user) {
+    $SFMCService->subscription($user, 'user');
+
+    $context['sandbox']['progress']++;
+    $context['sandbox']['current_id'] = $user->id();
+    $message = t('Submitting salesforce subscription for user id: "@id" ', [
+      '@id' => $user->id(),
+    ]);
+    $context['message'] = $message;
+    $context['results'][] = $message;
+  }
+
+  foreach ($webform_data as $webform_id => $webform) {
+    $SFMCService->subscription([$webform['webform_id'] => $webform], 'webform');
+    $SFMCService->updateWebformSubscriptionStatus($webform['webform_id'], $webform['webform_submission_id']);
+
+    $context['sandbox']['progress']++;
+    $context['sandbox']['current_id'] = $webform_id;
+    $message = t('Submitting salesforce subscription for webform id: "@id" ', [
+      '@id' => $webform_id,
+    ]);
+    $context['message'] = $message;
+    $context['results'][] = $message;
+  }
+
+  // Inform the batch engine that we are not finished,
+  // and provide an estimation of the completion level we reached.
+  if ($context['sandbox']['progress'] != $context['sandbox']['max']) {
+    $context['finished'] = $context['sandbox']['progress'] >= $context['sandbox']['max'];
+  }
+}
+
+/**
+ * @param $success
+ * @param $results
+ * @param $operations
+ * @return void
+ */
+function sfmc_connector_batch_process_finished($success, $results, $operations) {
+  if ($success) {
+    $message = \Drupal::translation()->formatPlural(
+      count($results),
+      'One subscription data processed.', '@count subscription data processed.'
+    );
+  }
+  else {
+    $message = t('Finished with an error.');
+  }
+
+  \Drupal::messenger()->addStatus($message);
+}
